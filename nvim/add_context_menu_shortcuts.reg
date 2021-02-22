@@ -1,0 +1,23 @@
+Windows Registry Editor Version 5.00
+
+; Add context menu option for when a user right-clicks a file
+[HKEY_CLASSES_ROOT\*\shell\nvim-qt]
+@="Edit with Neovim"
+"Icon"="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\""
+[HKEY_CLASSES_ROOT\*\shell\nvim-qt\command]
+@="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\" \"%1\""
+
+; Add context menu option for when a user right clicks a directory
+[HKEY_CLASSES_ROOT\Directory\shell\nvim-qt]
+@="Edit with Neovim"
+"Icon"="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\""
+[HKEY_CLASSES_ROOT\Directory\shell\nvim-qt\command]
+@="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\" \"%1\""
+
+; Add context menu option for when a user right clicks the background
+[HKEY_CLASSES_ROOT\Directory\Background\shell\nvim-qt]
+@="Edit with Neovim"
+"Icon"="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\""
+[HKEY_CLASSES_ROOT\Directory\Background\shell\nvim-qt\command]
+@="\"C:\\tools\\Neovim\\bin\\nvim-qt.exe\" \"%V\""
+
