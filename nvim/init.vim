@@ -9,7 +9,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'neoclide/coc.nvim'
 
 " LSP configurations
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
 
 " Git support
 Plug 'airblade/vim-gitgutter'
@@ -37,8 +37,10 @@ nnoremap <C-n> :NERDTree<cr>
 nnoremap <C-t> :NERDTreeToggle<cr>
 nnoremap <C-f> :NERDTreeFind<cr>
 
-" Start NERDTree and put the cursor back in the other window
-autocmd VimEnter * NERDTree | wincmd p
+" Start NERDTree when VIM is started with a directory argument and put the cursor back in the other window
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+            \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 
 " Exit nvim if NERDTree is the last window
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
@@ -60,15 +62,17 @@ autocmd BufWinEnter * silent NERDTreeMirror | wincmd p
 
 """"" BEGIN LANGUAGE SERVER CONFIGURATION
 
-lua << EOF
-require'lspconfig'
-EOF
+" lua << EOF
+" require'lspconfig'.fsautocomplete.setup{
+" cmd = {'dotnet', 'C:\\tools\\fsautocomplete\\fsautocomplete.dll', '--background-service-enabled'}
+" }
+" EOF
 
 """"" END LANGUAGE SERVER CONFIGURATION
 
 """"" BEGIN GRUVBOX CONFIGURATION
 
-autocmd vimenter * ++nested colorscheme gruvbox
+autocmd VimEnter * ++nested colorscheme gruvbox  
 
 """"" END GRUVBOX CONFIGURATION
 
@@ -273,6 +277,14 @@ set expandtab
 " Enable search highlighting, case-insenstive unless a capital is used
 set hlsearch ignorecase smartcase
 
+" Highlight trailing whitespace unless we're still typing
+" autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+" autocmd ColorScheme * match ExtraWhitespace /\s\+$/
+" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+" autocmd InsertEnter * match ExtraWhitespace /\s\+%#\@<!$/
+" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+" autocmd BufWinLeave * call clearmatches()
+
 " Always display the statusbar
 set laststatus=2
 
@@ -292,4 +304,4 @@ set title
 set mouse=a
 
 " F# LSP
-autocmd BufNewFile,BufRead *.fs,*.fsx,*.fsi set fil
+autocmd BufNewFile,BufRead *.fs,*.fsx,*.fsi set filetype=fsharp
