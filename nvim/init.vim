@@ -1,5 +1,7 @@
 " Jesse's nvim config
 
+set nocompatible
+
 " Load plugins
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -14,6 +16,13 @@ Plug 'airblade/vim-gitgutter'
 
 " Gruvbox theme
 Plug 'morhetz/gruvbox'
+
+" Support for just about everything
+Plug 'sheerun/vim-polyglot'
+
+" Better statusline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -35,7 +44,7 @@ autocmd vimenter * ++nested colorscheme gruvbox
 
 " Set the path to the git executable explicitly if using windows
 if has('win32')
-	let g:gitgutter_git_executable = 'C:\Program Files\Git\bin\git.exe'
+    let g:gitgutter_git_executable = 'C:\Program Files\Git\bin\git.exe'
 endif
 
 """"" END GITGUTTER CONFIGURATION
@@ -61,35 +70,35 @@ set shortmess+=c
 " Always show the sign column, otherwise it would shift
 " the text each time diagnostics appear/become resolved
 if has("patch-8.1.1564")
-	set signcolumn=number
+    set signcolumn=number
 else
-	set signcolumn=yes
+    set signcolumn=yes
 endif
 
 " Use tab for trigger completion with characters ahead and
 " navigate
 inoremap <silent><expr> <TAB>
-	\ pumvisible() ? "\<C-n>" :
-	\ <SID>check_back_space() ? "\<TAB>" :
-	\ coc#refresh()
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1] =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion
 if has('nvim')
-	inoremap <silent><expr> <c-space> coc#refresh()
+    inoremap <silent><expr> <c-space> coc#refresh()
 else
-	inoremap <silent><expr> <c-@> coc#refresh()
+    inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
 " Make <CR> auto-select the first completion item and notify
 " coc to format on enter
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-	\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use :CocDiagnostics to get all diagnostics of current buffer in
@@ -107,13 +116,13 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function s:show_documentation()
-	if (index(['vim', 'help'], &filetype) >= 0)
-		execute 'h '.expand('<cword>')
-	elseif (coc#rpc#ready())
-		call CocActionAsync('doHover')
-	else
-		execute '!' . &keywordprg . " " . expand('<cword>')
-	endif
+    if (index(['vim', 'help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor
@@ -127,11 +136,11 @@ xmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format-selected)
 
 augroup mygroup
-	autocmd!
-	" Setup formatexpr specified filetypes
-	autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-	" Update signature help on jump placeholder
-	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd!
+    " Setup formatexpr specified filetypes
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region
@@ -157,12 +166,12 @@ omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups
 if has('nvim-0.4.0') || has('patch-8.2.0750')
-	nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-	nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-	inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-	inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-	vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-	vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+    inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+    inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+    vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+    vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
 " Use CTRL-S for selections ranges
@@ -207,5 +216,51 @@ nnoremap <silent><nowait> <space>p :<C-u>CocListResume<cr>
 
 " Use system clipboard
 set clipboard+=unnamedplus
+
+" Use hybrid line numbers
+set number relativenumber
+
+" Toggle absolute line numbers when in insert mode
+augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup end
+
+"" Indentation settings
+" Makefiles should indent with tabs
+filetype plugin indent on
+autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
+" Everything else can use spaces plz
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+"" Search options
+" Enable search highlighting, case-insenstive unless a capital is used
+set hlsearch ignorecase smartcase
+
+" Always display the statusbar
+set laststatus=2
+
+" Highlight the current line
+set cursorline
+
+" Always show the cursor position
+set ruler
+
+" Increase the undo limit
+set history=1000
+
+" F# LSP
+autocmd BufNewFile,BufRead *.fs,*.fsx,*.fsi set filetype=fsharp
+
+lua << EOF
+require'lspconfig'.fsautocomplete.setup{
+cmd = {'dotnet', 'C:\tools\fsautocomplete\fsautocomplete.dll', '--background-service-enabled'}
+}
+EOF
+
 
 
